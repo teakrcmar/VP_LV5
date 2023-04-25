@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Karta RH</title>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/topojson.v2.js"></script>
+    <script src="https://d3js.org/d3-timer.v2.js"></script>
+</head>
+<body>
+    <script>
+        var width = 960;
+        var height = 700;
+        var projection = d3.geoMercator()
+            .center([0, 10])
+            .scale(6000)
+            .translate([17600, 4500])
+            .rotate([-180, 0]);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+
+        d3.json("https://raw.githubusercontent.com/teakrcmar/VP_LV5/main/hr_stats.json?token=GHSAT0AAAAAAB5RWCHFROFKIZD3ZOQR2VHAZCIIWAA", function(error, cro) {
+            var data = topojson.feature(cro, cro.objects.layer1);
+            var color = d3.scaleLinear()
+                .domain([0, 251584])
+                .range(["White", "Turquoise"]);
+            var g=svg.append("g");
+                g.selectAll("path.county")
+                    .data(data.features)
+                    .enter()
+                    .append("path")
+                    .attr("class", "county")
+                    .attr("id", function(d) { return d.id; })
+                    .attr("fill", function(d) { return color(d.properties.broj_stan); })
+                    .attr("d", path)
+                    .style("stroke", "gray")
+                    .style("stroke-width", 1)
+                    .style("stroke-opacity", 1)
+                    .on("click", zoomInfo);
+
+                    function zoomInfo(d) {
+                        var centroid = path.centroid(d);
+                        var x = centroid[0];
+                        var y = centroid[1];
+                        var scale_rate = 8;
+                        g.style("pointer-events","none");
+                        g.transition()
+                            .duration(1000)
+                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + scale_rate + ")translate(" + -x + "," + -y + ")")
+                            .transition()
+                            .delay(11000)
+                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1 + ")translate(" + -width / 2 + "," + -height / 2 + ")")
+                        g.append("text")
+                            .transition()
+                            .delay(1000)
+                            .attr("dx",x)
+                            .attr("dy",y-3)
+                            .attr("font-size","3")
+                            .text(d.properties.name);
+                        g.append("text")
+                            .transition()
+                            .delay(1000)
+                            .attr("dx",x)
+                            .attr("dy",y)
+                            .attr("font-size","3")
+                            .text("Stanovnici: " + d.properties.broj_stan);
+                        g.append("text")
+                            .transition()
+                            .delay(1000)
+                            .attr("dx",x)
+                            .attr("dy",y+3)
+                            .attr("font-size","3")
+                            .text("Umrli: " + d.properties.broj_umrlih);
+                    var timer=d3.timer(function(time){
+                        console.log(time);
+                        if (time>=11000){
+                            timer.stop();
+                            g.style("pointer-events","auto");
+                            d3.selectAll("text").remove();
+                        }})
+                    }
+        });
+    </script>
+</body>       
+</html>

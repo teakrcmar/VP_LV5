@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Karta RH</title>
+    <head>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="http://d3js.org/topojson.v2.js"></script>
+    </head>
+    <body>
+        <script>
+            var width = 960;
+            var height = 700;
+            var projection = d3.geoMercator()
+                .center([0, 10])
+                .scale(6000)
+                .translate([17600, 4500])
+                .rotate([-180, 0]);
+
+            var path = d3.geoPath()
+                .projection(projection);
+
+            var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                svg.call(d3.zoom().on("zoom", function () {
+                    svg.attr("transform", d3.event.transform)
+                }));
+
+            d3.json("https://raw.githubusercontent.com/teakrcmar/VP_LV5/main/hr_stats.json?token=GHSAT0AAAAAAB5RWCHFUJJRB5BZKGG537A4ZCIIARA", function(error, cro) {
+                var data = topojson.feature(cro, cro.objects.layer1);
+                var states = svg.selectAll("path.county")
+                    .data(data.features)
+                    .enter()
+                    .append("path")
+                    .on("mouseover", function (d) {
+                        d3.select("div").html(d.properties.name);
+                    })
+                    .attr("class", "county")
+                    .attr("id", function(d) { return d.id; })
+                    .attr("d", path)
+                    .style("fill", "Turquoise")
+                    .style("stroke", "Black")
+                    .style("stroke-width", 1)
+                    .style("stroke-opacity", 1);
+            });
+        </script>
+        <div></div>
+    </body>       
+</html>

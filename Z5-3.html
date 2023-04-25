@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Karta RH</title>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/topojson.v2.js"></script>
+</head>
+<body>
+    <script>
+        var width = 960;
+        var height = 700;
+        var projection = d3.geoMercator()
+            .center([0, 10])
+            .scale(6000)
+            .translate([17600, 4500])
+            .rotate([-180, 0]);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+
+        d3.json("https://raw.githubusercontent.com/teakrcmar/VP_LV5/main/hr_stats.json?token=GHSAT0AAAAAAB5RWCHFUJJRB5BZKGG537A4ZCIIARA", function(error, cro) {
+            var data = topojson.feature(cro, cro.objects.layer1);
+            var color = d3.scaleLinear()
+                .domain([0, 251584])
+                .range(["White", "Turquoise"]);
+            var states = svg.selectAll("path.county")
+                .data(data.features)
+                .enter()
+                .append("path")
+                .attr("class", "county")
+                .attr("fill", function(d) { return color(d.properties.broj_stan); })
+                .attr("d", path)
+                .style("stroke", "gray")
+                .style("stroke-width", 1)
+                .style("stroke-opacity", 1)
+                .on("mouseover", function(d){
+                    d3.select("#zupanija").text("Županija : "+ d.properties.name);
+                    d3.select("#broj_stanovnika").text("Broj stanovnika : "+ d.properties.broj_stan);
+                    d3.select("#broj_umrlih").text("Broj umrlih : "+ d.properties.broj_umrlih);
+                });
+        });
+    </script>
+    <div>
+        <p id="zupanija">Zupanija</p>
+        <p id="broj_stanovnika">Broj stanovnika</p>
+        <p id="broj_umrlih">Broj umrlih</p>
+    </div>
+</body>       
+</html>
