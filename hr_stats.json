@@ -47,7 +47,7 @@
                ],
                "properties":{
                   "broj_stan":1,
-                  "broj_umrlih": 33753,
+                  "broj_umrlih": 0,
                   "nezap_p_2006":18.3,
                   "nezap_p_2007":17.9,
                   "nezap_p_2008":15.3,
@@ -167,7 +167,7 @@
                ],
                "properties":{
                   "broj_stan":1,
-                  "broj_umrlih":23493,
+                  "broj_umrlih":0,
                   "nezap_p_2006":25,
                   "nezap_p_2007":23.5,
                   "nezap_p_2008":19.6,
@@ -302,7 +302,7 @@
                ],
                "properties":{
                   "broj_stan":1,
-                  "broj_umrlih":3493,
+                  "broj_umrlih":0,
                   "nezap_p_2006":22.2,
                   "nezap_p_2007":21.4,
                   "nezap_p_2008":19.1,
@@ -447,7 +447,7 @@
                ],
                "properties":{
                   "broj_stan":1,
-                  "broj_umrlih":24493,
+                  "broj_umrlih":0,
                   "nezap_p_2006":20.9,
                   "nezap_p_2007":20.1,
                   "nezap_p_2008":17.7,
@@ -555,7 +555,7 @@
                ],
                "properties":{
                   "broj_stan":1,
-                  "broj_umrlih":11922, 
+                  "broj_umrlih":0, 
                   "nezap_p_2006":14,
                   "nezap_p_2007":12.1,
                   "nezap_p_2008":9.6,
@@ -661,7 +661,7 @@
                ],
                "properties":{
                   "broj_stan":1,
-                  "broj_umrlih":7928,  
+                  "broj_umrlih":0,  
                   "nezap_p_2006":26.1,
                   "nezap_p_2007":24.1,
                   "nezap_p_2008":21.8,
